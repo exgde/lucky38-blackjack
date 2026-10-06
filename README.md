@@ -69,7 +69,3 @@ Todo o código deste repositório foi gerado pela IA a partir das minhas instru�
 ## Sobre o croupier (provisório)
 
 **O boneco usado hoje como croupier é provisório e foi desenhado pela IA**, em SVG, inspirado no estilo do Vault Boy. Ele serve para validar a ideia de um mascote que reage ao jogo. Minha intenção é trocá-lo por uma arte própria, mantendo o mesmo sistema de expressões.
-
-## Aviso
-
-Projeto de fã, sem fins comerciais. Fallout, New Vegas, Lucky 38 e Vault Boy são marcas da Bethesda Softworks/ZeniMax, e este projeto não tem nenhuma ligação com elas. Solitaire é marca da Microsoft.
