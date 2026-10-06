@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucky 38 Blackjack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&family=Monoton&family=Yellowtail&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-back="lucky">
+<div class="app">
+
+  <nav class="topbar">
+    <div class="menus">
+      <button class="menu-btn" popovertarget="m-game">Jogo</button>
+      <button class="menu-btn" popovertarget="m-help">Ajuda</button>
+    </div>
+    <div class="tools">
+      <button class="tool" data-act="new" title="Novo jogo (F2)">
+        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Novo</span>
+      </button>
+      <button class="tool" id="t-undo" data-act="undo" title="Desfazer aposta (Ctrl+Z)">
+        <svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg><span>Desfazer</span>
+      </button>
+      <button class="tool" id="t-hint" data-act="hint" title="Dica (T)">
+        <svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg><span>Dica</span>
+      </button>
+      <button class="tool" data-act="stats" title="Estatísticas">
+        <svg viewBox="0 0 24 24"><path d="M3 20h18M6 16v-5M11 16V6M16 16v-8"/></svg><span>Estatísticas</span>
+      </button>
+      <button class="tool" data-act="options" title="Opções">
+        <svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span>Opções</span>
+      </button>
+      <button class="tool" id="t-sound" data-act="sound" title="Som (M)" aria-pressed="true" aria-label="Som">
+        <svg class="on" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+        <svg class="off" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div popover id="m-game" class="menu">
+    <button data-act="new">Novo jogo <kbd>F2</kbd></button>
+    <button data-act="undo">Desfazer aposta <kbd>Ctrl+Z</kbd></button>
+    <button data-act="hint">Dica <kbd>T</kbd></button>
+    <hr>
+    <button data-act="stats">Estatísticas…</button>
+    <button data-act="deck">Baralho…</button>
+    <button data-act="options">Opções…</button>
+  </div>
+  <div popover id="m-help" class="menu">
+    <button data-act="help">Como jogar e atalhos <kbd>F1</kbd></button>
+    <button data-act="about">Sobre o Lucky 38</button>
+  </div>
+
+  <header class="sign">
+    <div class="neon"><span class="lucky">Lucky</span><span class="num">38</span></div>
+    <div class="marquee"><p>HO<span>T</span>TEST TABLES IN TO<span>W</span>N</p></div>
+  </header>
+
+  <main class="table">
+    <div id="shoe" class="shoe" aria-hidden="true">
+      <div class="card down"><div class="inner"><div class="back"></div></div></div>
+    </div>
+
+    <div class="croupier-wrap" aria-hidden="true">
+      <svg id="croupier" viewBox="-30 0 330 360">
+        <!-- arm scratching head (behind everything) -->
+        <g data-p="arm-scratch">
+          <path class="suit" d="M117 240 L65 201 L98 124 L70 112 L32 200 Q26 216 37 218 L99 264 Z"/>
+          <path class="red" d="M86 217 L68 241 L62 237 L80 213 Z"/>
+          <path class="gold" d="M98 124 L70 112 L67 120 L94 132 Z"/>
+          <path class="skin" d="M76 108 C70 96 78 84 90 84 C102 84 108 94 106 104 C104 114 92 118 82 116 Z"/>
+        </g>
+        <!-- back arm, hand on hip -->
+        <path class="suit" d="M212 238 C236 242 258 262 264 288 C270 312 256 330 236 340 L222 322 C236 314 242 302 240 290 C238 276 226 266 212 264 Z"/>
+        <path class="red" d="M240 253 L228 271 L234 276 L246 258 Z"/>
+        <path class="gold" d="M236 340 L222 322 L228 316 L242 334 Z"/>
+        <!-- front arm on hip (sleeve) -->
+        <g data-p="arm-hip">
+          <path class="suit" d="M108 238 C84 242 62 262 56 288 C50 312 64 330 84 340 L98 322 C84 314 78 302 80 290 C82 276 94 266 108 264 Z"/>
+          <path class="red" d="M80 253 L92 271 L86 276 L74 258 Z"/>
+          <path class="gold" d="M84 340 L98 322 L92 316 L78 334 Z"/>
+        </g>
+        <!-- torso: vault suit + croupier bow tie -->
+        <path class="skin" d="M144 192 L144 222 Q160 230 176 222 L176 192 Z"/>
+        <path class="suit" d="M96 254 C98 230 124 216 160 214 C196 216 222 230 226 254 C226 280 218 300 216 318 L220 360 L100 360 L104 318 C102 300 96 280 96 254 Z"/>
+        <path class="gold" d="M154 248 L166 248 L166 312 L154 312 Z"/>
+        <path class="gold" d="M130 220 L160 256 L192 220 L182 216 L160 242 L140 216 Z"/>
+        <path class="gold" d="M104 312 L216 312 L217 328 L103 328 Z"/>
+        <path class="red" d="M160 226 L140 214 L140 238 Z M160 226 L180 214 L180 238 Z"/>
+        <rect class="dkred" x="153" y="219" width="14" height="14" rx="4"/>
+        <circle class="red" cx="196" cy="274" r="11"/>
+        <text class="pin" x="196" y="278.5">38</text>
+        <path class="skin" d="M222 320 C232 318 240 330 236 340 C230 348 216 348 212 338 C208 328 214 322 222 320 Z"/>
+        <path data-p="arm-hip" class="skin" d="M98 320 C88 318 80 330 84 340 C90 348 104 348 108 338 C112 328 106 322 98 320 Z"/>
+        <!-- head -->
+        <g class="head" transform="rotate(-5 160 200)">
+          <path class="skin" d="M222 112 C238 104 250 120 246 138 C243 154 232 162 218 158 Z"/>
+          <path class="line" d="M228 124 C238 124 240 138 232 146"/>
+          <path class="skin" d="M112 74 C100 90 96 112 100 134 C102 152 104 170 110 184 C116 200 134 208 154 204 C182 198 206 186 216 166 C224 146 228 126 228 104 C228 70 204 50 170 50 C140 50 122 58 112 74 Z"/>
+          <path class="line" d="M118 193 Q127 200 138 199"/>
+          <path class="hair" d="M106 90 C99 80 98 66 102 58 C94 54 88 44 92 34 C98 16 124 4 156 4 C198 4 236 26 246 64 C252 88 242 106 226 116 C224 98 214 84 200 79 C180 71 156 71 140 76 C126 78 113 82 106 90 Z"/>
+          <path class="strand" d="M98 40 C104 26 124 22 132 32 C138 40 132 48 124 46 C118 44 118 38 122 36 M128 74 C134 54 166 38 204 40 M166 72 C184 58 216 58 236 76 M202 80 C216 78 230 88 238 100"/>
+          <g transform="translate(-8 0)">
+          <!-- brows -->
+          <path data-p="brow-n" class="line" d="M118 104 Q130 96 142 102 M160 100 Q174 92 188 99"/>
+          <path data-p="brow-up" class="line" d="M118 96 Q130 86 142 94 M160 92 Q174 82 188 90"/>
+          <path data-p="brow-smug" class="line" d="M118 106 Q130 102 142 105 M160 92 Q174 82 188 90"/>
+          <path data-p="brow-sad" class="line" d="M118 103 Q130 100 142 94 M160 94 Q174 100 188 103"/>
+          <!-- eyes -->
+          <g data-p="eye-n" class="blink">
+            <ellipse class="ink" cx="132" cy="120" rx="5.5" ry="8.5"/><ellipse class="ink" cx="172" cy="118" rx="5.5" ry="8.5"/>
+            <circle class="hl" cx="134" cy="116" r="2"/><circle class="hl" cx="174" cy="114" r="2"/>
+          </g>
+          <g data-p="eye-down">
+            <ellipse class="ink" cx="132" cy="125" rx="5.5" ry="6"/><ellipse class="ink" cx="172" cy="123" rx="5.5" ry="6"/>
+            <path class="line" d="M124 119 H140 M164 117 H180"/>
+          </g>
+          <g data-p="eye-wide">
+            <circle class="teeth" cx="132" cy="119" r="10.5"/><circle class="teeth" cx="172" cy="117" r="10.5"/>
+            <circle class="ink" cx="132" cy="119" r="4"/><circle class="ink" cx="172" cy="117" r="4"/>
+          </g>
+          <path data-p="eye-happy" class="line" d="M123 124 Q132 111 141 124 M163 122 Q172 109 181 122"/>
+          <g data-p="eye-wink">
+            <ellipse class="ink" cx="132" cy="120" rx="5.5" ry="8.5"/><circle class="hl" cx="134" cy="116" r="2"/>
+            <path class="line" d="M163 121 Q172 111 181 121"/>
+          </g>
+          <path class="line" d="M152 122 C146 134 143 141 150 143 C154 144 157 142 158 140"/>
+          <!-- mouths -->
+          <g data-p="mouth-grin">
+            <path class="teeth" d="M112 150 C130 160 170 160 196 146 C186 178 160 190 138 182 C124 176 116 164 112 150 Z"/>
+            <path class="line" d="M106 144 C103 152 107 159 114 159 M200 140 C205 148 203 155 196 157"/>
+          </g>
+          <g data-p="mouth-open">
+            <path class="mouth" d="M112 148 C132 158 172 158 198 144 C194 178 168 194 142 190 C124 186 112 168 112 148 Z"/>
+            <path class="teeth" d="M116 151 C136 160 170 160 194 147 L192 156 C170 168 136 168 118 160 Z"/>
+            <path class="tongue" d="M136 184 C144 174 162 174 170 184 C160 190 146 190 136 184 Z"/>
+            <path class="line" d="M106 142 C103 150 107 157 114 157 M202 138 C207 146 205 153 198 155"/>
+          </g>
+          <ellipse data-p="mouth-o" class="mouth" cx="154" cy="166" rx="12" ry="16"/>
+          <path data-p="mouth-smirk" class="line" d="M122 168 C142 176 170 172 192 150 M190 143 C198 147 198 156 192 160"/>
+          <g data-p="mouth-grimace">
+            <path class="teeth" d="M116 156 C136 150 168 150 190 156 L188 178 C168 172 136 172 118 178 Z"/>
+            <path class="line" d="M117 167 C138 161 168 161 189 167 M132 152 V175 M146 151 V173 M160 151 V173 M174 152 V175"/>
+          </g>
+          <path data-p="mouth-wavy" class="line" d="M118 168 q8 -8 16 0 t16 0 t16 0 t16 0"/>
+          <path data-p="mouth-flat" class="line" d="M124 168 L182 164"/>
+          <path data-p="mouth-focus" class="line" d="M138 166 Q152 173 166 165"/>
+          <path data-p="mouth-sad" class="line" d="M124 178 Q152 158 182 176"/>
+          </g>
+        </g>
+        <!-- thumbs-up arm -->
+        <g data-p="arm-thumb" class="thumb">
+          <path class="suit" d="M112 236 C92 230 66 218 46 200 L26 222 C46 246 78 264 104 274 Z"/>
+          <path class="red" d="M79 222 L63 253 L56 249 L72 218 Z"/>
+          <path class="gold" d="M46 200 L26 222 L33 228 L53 206 Z"/>
+          <path class="skin" d="M2 150 C-4 128 -2 104 12 98 C26 92 33 108 30 124 C29 134 30 142 34 148 Z"/>
+          <path class="skin" d="M18 146 C2 146 -10 160 -10 178 C-10 198 6 210 24 208 C42 206 52 192 50 174 C48 156 36 146 18 146 Z"/>
+          <path class="line" d="M-8 166 C6 163 22 163 34 166 M-10 181 C6 178 24 178 37 181 M-6 196 C6 194 20 194 32 193 M40 158 C48 170 48 188 40 200"/>
+        </g>
+        <!-- extras -->
+        <path data-p="sweat" class="drop" d="M254 74 C246 90 248 98 254 98 C260 98 262 90 254 74 Z"/>
+        <g data-p="sparkles">
+          <g transform="translate(52 64)"><path class="star" d="M0 -11 L2.8 -2.8 L11 0 L2.8 2.8 L0 11 L-2.8 2.8 L-11 0 L-2.8 -2.8 Z"/></g>
+          <g transform="translate(272 34)"><path class="star" d="M0 -11 L2.8 -2.8 L11 0 L2.8 2.8 L0 11 L-2.8 2.8 L-11 0 L-2.8 -2.8 Z"/></g>
+          <g transform="translate(282 178)"><path class="star" d="M0 -11 L2.8 -2.8 L11 0 L2.8 2.8 L0 11 L-2.8 2.8 L-11 0 L-2.8 -2.8 Z"/></g>
+        </g>
+      </svg>
+      <div id="bubble" class="bubble"></div>
+    </div>
+
+    <section class="hand-area">
+      <h2>DEALER <span id="dealer-score"></span></h2>
+      <div id="dealer" class="hand"></div>
+    </section>
+    <div id="msg" class="msg" aria-live="polite">BLACKJACK PAGA 3:2 · DEALER PARA NO 17</div>
+    <section class="hand-area">
+      <h2>VOCÊ <span id="player-score"></span></h2>
+      <div id="player" class="hand"></div>
+    </section>
+  </main>
+
+  <footer class="dock">
+    <div class="hud">
+      <div class="stat main"><small>SALDO</small><b id="bank">$1,000</b><i id="delta"></i></div>
+      <div class="stat"><small>APOSTA</small><b id="bet">$0</b></div>
+      <div class="stat"><small>MÃOS</small><b id="hands">0</b></div>
+      <div class="stat" id="time-stat"><small>TEMPO</small><b id="time">00:00</b></div>
+    </div>
+    <div class="actions">
+      <div id="bet-controls">
+        <button class="chip" data-v="10">10</button>
+        <button class="chip" data-v="50">50</button>
+        <button class="chip" data-v="100">100</button>
+        <button class="chip" data-v="500">500</button>
+        <button id="clear" class="btn dark">LIMPAR</button>
+        <button id="deal" class="btn">DEAL</button>
+      </div>
+      <div id="play-controls" hidden>
+        <button id="hit" class="btn">HIT</button>
+        <button id="stand" class="btn dark">STAND</button>
+        <button id="double" class="btn">DOUBLE</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Dialogs -->
+<dialog id="dlg-stats" class="dlg">
+  <form method="dialog">
+    <header><h3>Estatísticas</h3><button class="x" value="" aria-label="Fechar">×</button></header>
+    <div class="body"><dl id="stats-grid" class="stats"></dl></div>
+    <footer><button type="button" id="reset-stats" class="btn dark sm">ZERAR</button><button class="btn sm">OK</button></footer>
+  </form>
+</dialog>
+
+<dialog id="dlg-deck" class="dlg">
+  <form method="dialog">
+    <header><h3>Baralho</h3><button class="x" value="" aria-label="Fechar">×</button></header>
+    <div class="body backs">
+      <label data-back="lucky"><input type="radio" name="back" value="lucky"><div class="card down"><div class="inner"><div class="back"></div></div></div>Lucky 38</label>
+      <label data-back="noir"><input type="radio" name="back" value="noir"><div class="card down"><div class="inner"><div class="back"></div></div></div>Noir</label>
+      <label data-back="neon"><input type="radio" name="back" value="neon"><div class="card down"><div class="inner"><div class="back"></div></div></div>Neon Strip</label>
+      <label data-back="ivory"><input type="radio" name="back" value="ivory"><div class="card down"><div class="inner"><div class="back"></div></div></div>Marfim</label>
+    </div>
+    <footer><button class="btn sm">OK</button></footer>
+  </form>
+</dialog>
+
+<dialog id="dlg-options" class="dlg">
+  <form method="dialog">
+    <header><h3>Opções</h3><button class="x" value="" aria-label="Fechar">×</button></header>
+    <div class="body">
+      <label class="opt">Efeitos sonoros <input type="checkbox" id="opt-sound"></label>
+      <label class="opt">Animações rápidas <input type="checkbox" id="opt-fast"></label>
+      <label class="opt">Mostrar tempo <input type="checkbox" id="opt-timer"></label>
+    </div>
+    <footer><button class="btn sm">OK</button></footer>
+  </form>
+</dialog>
+
+<dialog id="dlg-help" class="dlg">
+  <form method="dialog">
+    <header><h3>Como jogar</h3><button class="x" value="" aria-label="Fechar">×</button></header>
+    <div class="body">
+      <ul class="rules">
+        <li>Chegue mais perto de 21 que o dealer sem passar.</li>
+        <li>Figuras valem 10; Ás vale 1 ou 11.</li>
+        <li>Blackjack (Ás + 10 nas duas primeiras) paga 3:2.</li>
+        <li>Dealer compra até 17 e para.</li>
+        <li>Double: dobra a aposta, recebe só mais uma carta.</li>
+      </ul>
+      <table class="keys">
+        <tr><td><kbd>1</kbd>–<kbd>4</kbd></td><td>Fichas 10 / 50 / 100 / 500</td></tr>
+        <tr><td><kbd>Enter</kbd></td><td>Deal</td></tr>
+        <tr><td><kbd>H</kbd> <kbd>S</kbd> <kbd>D</kbd></td><td>Hit / Stand / Double</td></tr>
+        <tr><td><kbd>T</kbd></td><td>Dica</td></tr>
+        <tr><td><kbd>Ctrl+Z</kbd></td><td>Desfazer última ficha</td></tr>
+        <tr><td><kbd>M</kbd></td><td>Liga/desliga som</td></tr>
+        <tr><td><kbd>F2</kbd></td><td>Novo jogo</td></tr>
+      </table>
+    </div>
+    <footer><button class="btn sm">OK</button></footer>
+  </form>
+</dialog>
+
+<dialog id="dlg-about" class="dlg">
+  <form method="dialog">
+    <header><h3>Sobre o Lucky 38</h3><button class="x" value="" aria-label="Fechar">×</button></header>
+    <div class="body about">
+      <div class="neon small"><span class="lucky">Lucky</span><span class="num">38</span></div>
+      <p>Blackjack de fã inspirado em Fallout: New Vegas e no velho Solitaire.</p>
+      <p class="muted">A casa sempre vence. Quase sempre.</p>
+    </div>
+    <footer><button class="btn sm">OK</button></footer>
+  </form>
+</dialog>
+
+<dialog id="dlg-confirm" class="dlg">
+  <form method="dialog">
+    <header><h3>Novo jogo</h3></header>
+    <div class="body"><p id="confirm-text"></p></div>
+    <footer><button value="cancel" class="btn dark sm">CANCELAR</button><button value="ok" class="btn sm">CONFIRMAR</button></footer>
+  </form>
+</dialog>
+
+<script src="game.js"></script>
+</body>
+</html>
